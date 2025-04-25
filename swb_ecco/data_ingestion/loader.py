@@ -26,4 +26,6 @@ class AbstractDataLoader(DataLoaderInterface, ABC):
         output_df.to_csv(output_filepath)
 
 
-class DataLoader
+class DataLoaderOPSD:
+
+    pass
