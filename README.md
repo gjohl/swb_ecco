@@ -1,11 +1,12 @@
 # swb_ecco
 
 ## 0. Background
-This repository contains 
+This repository contains for data ingestion and modelling of energy systems in Europe and northern Africa.
 
 
 ## 1. Dev Environment Setup
 Create an environment.
+
 ```shell
 conda create -n ecco python=3.11
 conda activate ecco
@@ -13,7 +14,9 @@ pip install -e .
 pip install -r requirements-dev.txt
 ```
 
-Recompile requirements (only required if new dependencies are added or upgrading existing libraries).
+Recompile requirements. 
+This is only required if you are adding new dependencies to the project or upgrading existing libraries.
+
 ```shell
 pip install pip-tools
 pip-compile requirements.in --upgrade
