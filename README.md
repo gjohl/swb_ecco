@@ -6,6 +6,7 @@ This repository contains for data ingestion and modelling of energy systems in E
 
 ## 1. Dev Environment Setup
 Create an environment.
+
 ```shell
 conda create -n ecco python=3.11
 conda activate ecco
@@ -15,6 +16,7 @@ pip install -r requirements-dev.txt
 
 Recompile requirements. 
 This is only required if you are adding new dependencies to the project or upgrading existing libraries.
+
 ```shell
 pip install pip-tools
 pip-compile requirements.in --upgrade
