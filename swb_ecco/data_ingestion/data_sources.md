@@ -8,4 +8,21 @@ SciGRID gas: open-source gas transmission data model for Europe SciGRID gas - wi
 
 Open Power System Data: Open Power System Data – A platform for open data of the European power system.  https://open-power-system-data.org/
 
+cet_cest_timestamp
+load_actual_entsoe_transparency
+load_forecast_entsoe_transparency
+price_day_ahead
+solar_capacity
+solar_generation_actual
+solar_profile
+utc_timestamp
+wind_capacity
+wind_generation_actual
+wind_offshore_capacity
+wind_offshore_generation_actual
+wind_offshore_profile
+wind_onshore_capacity
+wind_onshore_generation_actual
+wind_onshore_profile
+
 Atlite: free software, xarray -based Python library for converting weather data (such as wind speeds, solar radiation, temperature and runoff) into power systems data (such as wind power, solar power, hydro power and heating demand time series) GitHub - PyPSA/atlite: atlite: A Lightweight Python Package for Calculating Renewable Power Potentials and Time Series  https://github.com/PyPSA/atlite
