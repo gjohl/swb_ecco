@@ -1,7 +1,7 @@
 # swb_ecco
 
 ## 0. Background
-This repository contains 
+This repository contains for data ingestion and modelling of energy systems in Europe and northern Africa.
 
 
 ## 1. Dev Environment Setup
