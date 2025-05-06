@@ -13,7 +13,8 @@ pip install -e .
 pip install -r requirements-dev.txt
 ```
 
-Recompile requirements (only required if new dependencies are added or upgrading existing libraries).
+Recompile requirements. 
+This is only required if you are adding new dependencies to the project or upgrading existing libraries.
 ```shell
 pip install pip-tools
 pip-compile requirements.in --upgrade

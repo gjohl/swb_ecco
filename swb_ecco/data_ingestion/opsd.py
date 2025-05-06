@@ -25,9 +25,20 @@ class DataLoaderOPSD(AbstractDataLoader):
     def format_data(raw_data: pd.DataFrame) -> pd.DataFrame:
         """Format the raw OPSD data.
 
-        For this first iteration we'll just filter on the `load_actual_entsoe_transparency`.
+        NOTE: For this first iteration we'll just filter on the `load_actual_entsoe_transparency`.
         This is just an arbitrary placeholder until we know which data is actually useful;
         it's easy enough to change `base_field_name` to some other column.
+
+        Parameters
+        ----------
+        raw_data: pd.DataFrame
+            The raw data from the source.
+            This is the output of `DataLoaderOPSD.load_raw_data()`
+
+        Returns
+        -------
+        output_df: pd.DataFrame
+            The data in the format required by PyPSA.
         """
         base_field_name = 'load_actual_entsoe_transparency'
         timestamp_col = 'utc_timestamp'

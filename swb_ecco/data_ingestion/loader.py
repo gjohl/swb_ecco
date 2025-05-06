@@ -38,20 +38,37 @@ class AbstractDataLoader(DataLoaderInterface, ABC):
         self.normalised_df = None
 
     def retrieve_normalised_data(self):
-        """Retrieve data from this source normalised in the format required by PyPSA."""
+        """Retrieve data from this source normalised in the format required by PyPSA.
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of normalised data, i.e. the source data wrangled into the format required by PyPSA.
+        """
         self.raw_df = self.load_raw_data()
         self.normalised_df = self.format_data(self.raw_df)
 
         return self.normalised_df
 
     def load_raw_data(self) -> pd.DataFrame:
-        """
-        Load raw data from a CSV at the given source URL.
+        """Load raw data from a CSV at the given source URL.
 
         Data loaders for sources which are not CSV files can overwrite this method in the child class,
-        but this will likely be common enough to belong in the base class."""
+        but this will likely be common enough to belong in the base class.
+
+        Returns
+        -------
+        pd.DataFrame
+            The raw data, i.e. a pandas DataFrame of the source data with minimal modifications.
+        """
         return pd.read_csv(self.source)
 
     def write_csv(self, output_filepath: Path, **kwargs) -> None:
-        """Write the normalised data to a CSV file."""
+        """Write the normalised data to a CSV file.
+
+        Parameters
+        ----------
+        output_filepath: Path
+            Filepath to write the DataFrame to.
+        """
         self.normalised_df.to_csv(output_filepath, **kwargs)
