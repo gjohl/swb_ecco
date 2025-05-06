@@ -1,21 +1,37 @@
-The main datasets will include energy data corresponding to single or multiple “nodes” in Southern European and Northern African countries.  
+# Data Sources
+Notes on various data sources identified so far.
 
-UNSD Energy Statistics: public dataset of energy statistics (installed capacity, sector consumption, etc) NSI .NET Client 
 
-UNSD Energy Balance: public dataset of energy balance (production, import, export, etc)  
+## UNSD
+This is available through the [browser client here]((https://data.un.org/SdmxBrowser/start)). This can be queried manually through the website and the results downloaded to CSV files.
 
-SciGRID gas: open-source gas transmission data model for Europe SciGRID gas - wiki.openmod-initiative.org  https://wiki.openmod-initiative.org/wiki/SciGRID_gas#:~:text=The%20SciGRID_gas%20project%20provides%20an%20open-source%20gastransmission%20data,meta%20information%20originating%20from%20various%20publicly%20available%20sources.
+There are two tabs that are relevant to us:
+- UNSD Energy Statistics: Public dataset of energy statistics (installed capacity, sector consumption, etc.)
+- UNSD Energy Balance: Public dataset of energy balance (production, import, export, etc.)  
 
-Open Power System Data: Open Power System Data – A platform for open data of the European power system.  https://open-power-system-data.org/
 
-cet_cest_timestamp
+## SciGRID 
+SciGRID gas is an open-source gas transmission data model for Europe
+
+The SciGRID data and many more sources are listed [here](https://wiki.openmod-initiative.org/wiki/)
+
+## Open Power System Data
+A platform for open data of the European power system. 
+
+Data available [here](https://open-power-system-data.org/)
+
+Presumably the time series data will be most relevant to us. (Available [here](https://data.open-power-system-data.org/time_series/))
+
+This has two timestamp columns: `cet_cest_timestamp, utc_timestamp`
+
+It has the following columns, each prefixed by a country code:
+```
 load_actual_entsoe_transparency
 load_forecast_entsoe_transparency
 price_day_ahead
 solar_capacity
 solar_generation_actual
 solar_profile
-utc_timestamp
 wind_capacity
 wind_generation_actual
 wind_offshore_capacity
@@ -24,5 +40,14 @@ wind_offshore_profile
 wind_onshore_capacity
 wind_onshore_generation_actual
 wind_onshore_profile
+```
 
-Atlite: free software, xarray -based Python library for converting weather data (such as wind speeds, solar radiation, temperature and runoff) into power systems data (such as wind power, solar power, hydro power and heating demand time series) GitHub - PyPSA/atlite: atlite: A Lightweight Python Package for Calculating Renewable Power Potentials and Time Series  https://github.com/PyPSA/atlite
+The country codes present:
+```
+['AT', 'BE', 'BG', 'CH', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB',
+ 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'ME', 'NL', 'NO', 'PL', 'PT',
+ 'RO', 'RS', 'SE', 'SI', 'SK', 'UA']
+```
+
+## Atlite
+Python library for converting weather data (such as wind speeds, solar radiation, temperature and runoff) into power systems data (such as wind power, solar power, hydro power and heating demand time series) See [GitHub page here](https://github.com/PyPSA/atlite)

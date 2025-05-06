@@ -5,10 +5,10 @@ import pandas as pd
 
 
 class DataLoaderInterface:
-    """Define the methods + kwargs that all data loaders classes should have"""
+    """Define the methods + kwargs that all data loaders classes should have."""
 
     def retrieve_normalised_data() -> pd.DataFrame:
-        """Retrieve data from this source normalised into the format required by PyPSA."""
+        """Retrieve data from this source normalised in the format required by PyPSA."""
         raise NotImplementedError()
 
     def load_raw_data() -> pd.DataFrame:
@@ -38,7 +38,7 @@ class AbstractDataLoader(DataLoaderInterface, ABC):
         self.normalised_df = None
 
     def retrieve_normalised_data(self):
-        """Retrieve the normalised data by loading the raw data and then applying any necessary formatting."""
+        """Retrieve data from this source normalised in the format required by PyPSA."""
         self.raw_df = self.load_raw_data()
         self.normalised_df = self.format_data(self.raw_df)
 

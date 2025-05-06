@@ -21,10 +21,6 @@ class DataLoaderOPSD(AbstractDataLoader):
     opsd_loader.write_csv('/path/to/file.csv')
     """
 
-    def load_raw_data(self) -> pd.DataFrame:
-        """Load raw data from the given source."""
-        return pd.read_csv(self.source)
-
     @staticmethod
     def format_data(raw_data: pd.DataFrame) -> pd.DataFrame:
         """Format the raw OPSD data.
