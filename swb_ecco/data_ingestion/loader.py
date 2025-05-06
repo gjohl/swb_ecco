@@ -29,7 +29,7 @@ class AbstractDataLoader(DataLoaderInterface, ABC):
     """
     Implement the methods common to all child classes.
 
-    Most sources will only need to implement the `format_data` method in their child class.    
+    Most sources will only need to implement the `format_data` method in their child class.
     """
 
     def __init__(self, source: str) -> pd.DataFrame:
@@ -43,12 +43,12 @@ class AbstractDataLoader(DataLoaderInterface, ABC):
         self.normalised_df = self.format_data(self.raw_df)
 
         return self.normalised_df
-    
+
     def load_raw_data(self) -> pd.DataFrame:
         """
-        Load raw data from a CSV at the given source URL. 
-        
-        Data loaders for sources which are not CSV files can overwrite this method in the child class, 
+        Load raw data from a CSV at the given source URL.
+
+        Data loaders for sources which are not CSV files can overwrite this method in the child class,
         but this will likely be common enough to belong in the base class."""
         return pd.read_csv(self.source)
 
