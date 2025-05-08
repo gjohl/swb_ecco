@@ -37,7 +37,7 @@ There is a broad split between `modelling` and `data_ingestion`.
 ### 3.1. Data Ingestion
 
 The `data_ingestion` subdirectory has the data loader classes to ingest data from different sources.
-The general idea (this is a work-in-progress subject to change as we discover more about the data requirements) is to have a common API for the different sources. 
+The general idea is to have a common API for the different sources. (This specific API is a work-in-progress and is subject to change as we discover more about the data requirements.)
 
 
 The typical use case for each would be to call the `retrieve_normalised_data` method.
@@ -54,7 +54,7 @@ opsd_loader.write_csv('/path/to/file.csv')
 ```
 
 
-The idea is that as we add more sources, there will be a common interface for each. So, say we add Scigrid data. The code from the user's point of view would be almost identical:
+The idea is that as we add more sources, there will be a common interface for each. So, for example, we add Scigrid data. The code from the user's point of view would be almost identical:
 
 ```python
 from swb_ecco.data_ingestion.loader import DataLoaderScigrid
@@ -66,7 +66,7 @@ scigrid_df = scigrid_loader.retrieve_normalised_data()
 scigrid_loader.write_csv('/path/to/file.csv')
 ```
 
-If we want to implement a new data loader, say from some new source called "XYZ", we create a class inheriting from `AbstractDataLoader` and implement the methods below. 
+If we want to implement a new data loader, say, from some new source called "XYZ", we would create a class inheriting from `AbstractDataLoader` and implement the methods below. 
 In most cases, we'd only actually need to implement `format_data` to handle the logic specific to this source; the `load_raw_data` and `write_csv` methods are handled in the parent class and are pretty generic.
 
 ```python
@@ -83,7 +83,6 @@ class DataLoaderXYZ(AbstractDataLoader):
     def format_data():
         # This is where the source-specific logic goes, to wrangle the data into a format that is compatible with PyPSA
         pass
-
 ```
 
 We can also extend the interface if we need to. Say, for example, we later decide we want files in parquet format rather than csv. We could add a `write_parquet` method to `DataLoaderInterface` and implement it in `AbstractDataLoader` as:
