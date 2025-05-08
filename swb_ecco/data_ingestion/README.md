@@ -3,7 +3,7 @@ Notes on various data sources identified so far.
 
 
 ## UNSD
-This is available through the [browser client here]((https://data.un.org/SdmxBrowser/start)). This can be queried manually through the website and the results downloaded to CSV files.
+This is available through the [browser client here](https://data.un.org/SdmxBrowser/start). This can be queried manually through the website and the results downloaded to CSV files.
 
 There are two tabs that are relevant to us:
 - UNSD Energy Statistics: Public dataset of energy statistics (installed capacity, sector consumption, etc.)
