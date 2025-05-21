@@ -1,0 +1,71 @@
+# This is an early version of a model that forecasts load for 2030 and tries to expand renewable energy to meet those needs. Last updated 5/21/25
+version: 0.6.0
+
+# Countries for the run
+countries: ["ES","FR","IT","GR","TR","MA","DZ","LY","TN","EG"]
+
+scenario:
+  planning_horizons: [2030]
+  clusters: [195] # Threw errors for lower values
+  opts: ['6H'] # Helps avoid plateuing during solving, experimenting with lower values
+
+snapshots:
+  start: "2013-01-01" 
+  end:   "2014-01-01" # Lower this if you need this to solve anytime soon
+  inclusive: "left" # end is not inclusive
+
+ 
+# Allow renewable/storage expansion
+electricity:
+  extendable_carriers:
+    Generator: ["solar", onwind, offwind-ac, offwind-dc, "hydro", "ror"]
+    StorageUnit: ["battery", "H2"]
+    Store: ["battery", "H2"]
+    Link: []
+  co2limit: .inf  # just for testing
+
+# Allow new capacities
+sector:
+  keep_existing_capacities: false # Allow building new capacities
+
+# Solver & run settings
+solving:
+  solver:
+    name: highs
+    options: highs-default
+  options:
+    load_shedding: 1000000 # Currently, setting this to false results in infeasability. Likely a sign of a larger issue.
+
+  solver_options:
+    highs-default:
+      # Many of these are copied from config.default
+      # refer to https://ergo-code.github.io/HiGHS/dev/options/definitions/
+      threads: 4
+      solver: "ipm"
+      run_crossover: "on" # Default is "off", but I find that Phase II solution still has residuals and therefore doesn't completely solve without a crossover after
+      small_matrix_value: 1e-6
+      large_matrix_value: 1e9
+      primal_feasibility_tolerance: 1e-5
+      dual_feasibility_tolerance: 1e-5
+      ipm_optimality_tolerance: 1e-4
+      parallel: "on"
+      random_seed: 123
+      #ipm_iteration_limit: 100
+      user_bound_scale: -2 # Solver suggests doing this when solve_network runs and it seems to help solve faster
+      presolve: "on"
+
+run:
+  name: "renewable_expansion"
+  shared_cutouts: true # Helps with repeated runs
+
+# Load forecast
+load_options:
+  ssp: "ssp2-2.6" # "Middle of the road" scenario
+  weather_year: 2013 # Documentation suggests using this as the weather year
+  prediction_year: 2030
+  scale: 1 # No scaling needed
+
+
+cluster_options:
+  algorithm: kmeans
+  feature: load
