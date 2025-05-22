@@ -1,0 +1,104 @@
+version: 0.6.0
+
+# Countries for the run
+countries: ["ES","FR","IT","GR","TR","MA","DZ","LY","TN","EG"]
+
+scenario:
+  planning_horizons: [2030]
+  clusters: [min] # Threw errors for lower values
+  opts: ['6H'] # Helps avoid plateuing during solving, experimenting with lower values
+
+snapshots:
+  start: "2013-01-01"
+  end:   "2014-01-01"
+  inclusive: "left" # end is not inclusive
+
+ 
+# Allow renewable/storage expansion
+electricity:
+  extendable_carriers:
+    Generator: ["solar", onwind, offwind-ac, offwind-dc, "hydro", "ror"]
+    StorageUnit: ["battery", "H2"]
+    Store: ["battery", "H2"]
+    Link: []
+  co2limit: .inf  # just for testing
+
+# Allow new capacities
+sector:
+  keep_existing_capacities: false # Allow building new capacities
+
+# Solver & run settings
+solving:
+  solver:
+    name: highs
+    options: highs-default
+  options:
+    load_shedding: 1000000 # Currently, setting this to false results in infeasability. Likely a sign of a larger issue.
+
+  solver_options:
+    highs-default:
+      # Many of these are copied from config.default
+      # refer to https://ergo-code.github.io/HiGHS/dev/options/definitions/
+      threads: 4
+      solver: "ipm"
+      run_crossover: "on" # Default is "off", but I find that Phase II solution still has residuals and therefore doesn't completely solve without a crossover after
+      small_matrix_value: 1e-6
+      large_matrix_value: 1e9
+      primal_feasibility_tolerance: 1e-5
+      dual_feasibility_tolerance: 1e-5
+      ipm_optimality_tolerance: 1e-4
+      parallel: "on"
+      random_seed: 123
+      #ipm_iteration_limit: 100
+      user_bound_scale: -2 # Solver suggests doing this when solve_network runs and it seems to help solve faster
+      presolve: "on"
+
+run:
+  name: "renewable_expansion_fullyear"
+  shared_cutouts: true # Helps with repeated runs
+
+# Load forecast
+load_options:
+  ssp: "ssp2-2.6" # "Middle of the road" scenario
+  weather_year: 2013 # Documentation suggests using this as the weather year
+  prediction_year: 2030
+  scale: 1 # No scaling needed
+
+# definition of the Coordinate Reference Systems
+crs:
+  geo_crs: EPSG:4326 # general geographic projection, not used for metric measures. "EPSG:4326" is the standard used by OSM and google maps
+  distance_crs: EPSG:3857 # projection for distance measurements only. Possible recommended values are "EPSG:3857" (used by OSM and Google Maps)
+  area_crs: ESRI:54009 # projection for area measurements only. Possible recommended values are Global Mollweide "ESRI:54009"
+
+
+cluster_options:
+  algorithm: hac # Alternative use kmeans
+  feature: load
+  simplify_network:
+  alternative_clustering: true
+  simplify_network:
+    to_substations: false # network is simplified to nodes with positive or negative power injection (i.e. substations or offwind connections)
+    algorithm: kmeans # Alternatively use hac
+    feature: solar+onwind-time # only for hac. choose from: [solar+onwind-time, solar+onwind-cap, solar-time, solar-cap, solar+offwind-cap] etc.
+    exclude_carriers: []
+    remove_stubs: true
+    remove_stubs_across_borders: false
+    p_threshold_drop_isolated: 20 # [MW] isolated buses are being discarded if bus mean power is below the specified threshold
+    p_threshold_merge_isolated: 300 # [MW] isolated buses are being merged into a single isolated bus if a bus mean power is below the specified threshold
+    s_threshold_fetch_isolated: false # [-] a share of the national load for merging an isolated network into a backbone network
+
+build_shape_options:
+  gadm_layer_id: 0 #GADM level area used for the gadm_shapes. Codes are country-dependent but roughly: 0: country, 1: region/county-like, 2: municipality-like
+
+# Uncomment these for future runs, but these should be enabled for the first run
+#enable:
+#  retrieve_databundle: false #  Recommended 'true', for the first run. Otherwise data might be missing.
+#  retrieve_databundle_sector: false
+#  retrieve_cost_data: false # true: retrieves cost data from technology data and saves in resources/costs.csv, false: uses cost data in data/costs.csv
+#  download_osm_data: false # If 'true', OpenStreetMap data will be downloaded for the above given countries
+#  build_natura_raster: false # If True, then an exclusion raster will be build
+#  build_cutout: false
+#  # If "build_cutout" : true, then environmental data is extracted according to `snapshots` date range and `countries`
+#  # requires cds API key https://cds.climate.copernicus.eu/api-how-to
+#  # More information https://atlite.readthedocs.io/en/latest/introduction.html#datasets
+#  progress_bar: true # show progress bar during downloading routines and other long-running tasks
